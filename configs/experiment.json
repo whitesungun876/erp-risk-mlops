@@ -1,0 +1,31 @@
+{
+  "protocol_version": "day3-freeze-2026-09-30",
+  "source_revision": "d6f5097a5513ff79c1793fd083405c6b1a3ba301",
+  "source_sha256": {
+    "erpsim1": "7e36e111f35524352179b550e34ccf5c2501aad58054c34a04dc444830f2db80",
+    "erpsim2": "472706718323d0a330f1e406db41d1f959304ce27a618468c6df32bffe13ded7"
+  },
+  "review_unit": ["source_run", "Belegnummer"],
+  "target": "any row in the review unit has Label != NonFraud",
+  "primary_split": {"development": "erpsim1", "test": "erpsim2"},
+  "sensitivity_split": {"development": "erpsim2", "test": "erpsim1"},
+  "review_fractions": [0.01, 0.02, 0.05],
+  "rank_tie_break": "unit_id_ascending",
+  "features": [
+    "line_count",
+    "debit_total",
+    "credit_total",
+    "max_line_amount",
+    "distinct_gl_accounts",
+    "distinct_transaction_types"
+  ],
+  "domain_informed_rule_baseline": {
+    "line_count_quantile": 0.99,
+    "debit_total_quantile": 0.99,
+    "score": "number of exceeded training-side thresholds",
+    "threshold_comparison": "strictly_greater_than"
+  },
+  "isolation_forest": {"n_estimators": 100, "contamination": "auto", "random_state": 20260930},
+  "xgboost": {"n_estimators": 100, "max_depth": 2, "learning_rate": 0.05, "random_state": 20260930},
+  "scenario_stress_test": "leave one validated fraud scenario and linked units out of development; report infeasible folds"
+}

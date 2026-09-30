@@ -1,0 +1,8 @@
+# Local verification only; the Databricks serverless environment is a separate gate.
+FROM python:3.12-slim
+
+RUN pip install --no-cache-dir --disable-pip-version-check \
+    xgboost-cpu==3.4.1 scikit-learn==1.9.0
+
+WORKDIR /work
+ENV PYTHONDONTWRITEBYTECODE=1

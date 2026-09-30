@@ -1,0 +1,10 @@
+# Real-data experiments run locally but track only aggregate evidence in
+# Databricks MLflow. The public source CSV files are mounted read-only and are
+# never copied into the image or logged as artifacts.
+FROM python:3.12-slim
+
+RUN pip install --no-cache-dir --disable-pip-version-check \
+    xgboost-cpu==3.4.1 scikit-learn==1.9.0 mlflow==3.16.1
+
+WORKDIR /work
+ENV PYTHONDONTWRITEBYTECODE=1

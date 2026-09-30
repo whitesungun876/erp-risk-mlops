@@ -1,0 +1,27 @@
+bundle:
+  name: erp-risk-mlops
+
+resources:
+  jobs:
+    erp_risk_batch:
+      name: erp-risk-batch-manual
+      max_concurrent_runs: 1
+      tasks:
+        - task_key: score_batch
+          notebook_task:
+            notebook_path: ./scripts/batch_score_notebook.py
+          environment_key: batch_scoring
+          timeout_seconds: 1200
+      environments:
+        - environment_key: batch_scoring
+          spec:
+            environment_version: '5'
+            dependencies:
+              - mlflow==3.16.1
+              - xgboost-cpu==3.4.1
+              - numpy==2.5.3
+
+targets:
+  dev:
+    mode: development
+    default: true
